@@ -26,6 +26,18 @@ class MainActivity: FlutterActivity() {
         FinpaySDKUI.openApplication(this@MainActivity, credential())
     }
 
+    private fun getUserBalance(
+        onResult: (String) -> Unit
+    ) {
+        FinpaySDK.getUserBallance(
+            java.util.UUID.randomUUID().toString(), //random string
+            this, {
+                onResult(it.amount!!)
+            },{
+                onResult("0")
+            })
+    }
+
     fun credential(): Credential {
         val cd = Credential()
         cd.setUsername("MT77764DKM83N")

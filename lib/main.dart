@@ -74,6 +74,14 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  _getUserBalance() async {
+    try {
+      await platform.invokeMethod("getUserBalance");
+    } on PlatformException catch(e){
+      print(e.message);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
