@@ -66,9 +66,49 @@ class _MyHomePageState extends State<MyHomePage> {
   static const CHANNEL = 'lib.finpay.sdk/channels';
   static const platform = const MethodChannel(CHANNEL);
 
+  _logout() async {
+    try {
+      await platform.invokeMethod("logout");
+    } on PlatformException catch(e){
+      print(e.message);
+    }
+  }
+
+  _connectAccount() async {
+    try {
+      await platform.invokeMethod("connectAccount");
+    } on PlatformException catch(e){
+      print(e.message);
+    }
+  }
+
   _openApplication() async {
     try {
       await platform.invokeMethod("openApplication");
+    } on PlatformException catch(e){
+      print(e.message);
+    }
+  }
+
+  _openQris() async {
+    try {
+      await platform.invokeMethod("openQris");
+    } on PlatformException catch(e){
+      print(e.message);
+    }
+  }
+
+  _openTelkom() async {
+    try {
+      await platform.invokeMethod("openTelkom");
+    } on PlatformException catch(e){
+      print(e.message);
+    }
+  }
+
+  _openWallet() async {
+    try {
+      await platform.invokeMethod("openWallet");
     } on PlatformException catch(e){
       print(e.message);
     }
@@ -123,17 +163,71 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
+            SizedBox(height: 20,),
+            _roundedWidget(
+                text: "Logout",
+                backgroundColor: Color(0xFF333333),
+                textColor: Color(0xFFFFFFFF),
+                iconColor: Color(0xFFFFFFFF),
+                onTap: () async {
+                  await _logout();
+                }
+            ),
+            SizedBox(height: 20,),
+            _roundedWidget(
+                text: "Open",
+              backgroundColor: Color(0xFF333333),
+              textColor: Color(0xFFFFFFFF),
+              iconColor: Color(0xFFFFFFFF),
+              onTap: () async {
+                  await _openApplication();
+              }
+            )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async{
           print("test");
-          await _openApplication();
+          await _openTelkom();
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  Widget _roundedWidget({
+    required String? text,
+    Color? backgroundColor,
+    Color? iconColor,
+    Color? textColor,
+    Function? onTap
+  }) {
+    return GestureDetector(
+      onTap: () async => onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: backgroundColor
+        ),
+        padding: EdgeInsets.all(10),
+        child: Column(
+          children: [
+            Icon(
+              Icons.history,
+              color: iconColor,
+            ),
+            SizedBox(height: 5,),
+            Text(
+              text!,
+              style: TextStyle(
+                color: textColor
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
