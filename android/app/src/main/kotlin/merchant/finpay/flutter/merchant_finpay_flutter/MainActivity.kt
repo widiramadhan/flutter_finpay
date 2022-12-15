@@ -1,23 +1,31 @@
 package merchant.finpay.flutter.merchant_finpay_flutter
 
-import android.os.Bundle
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.embedding.engine.plugins.util.GeneratedPluginRegister
 import io.flutter.plugin.common.MethodChannel
+import io.flutter.plugins.GeneratedPluginRegistrant
 import lib.finpay.sdk.corekit.FinpaySDK
 import lib.finpay.sdk.corekit.model.Credential
 import lib.finpay.sdk.uikit.FinpaySDKUI
 
-class MainActivity: FlutterActivity() {
-    private val CHANNEL = "lib.finpay.sdk/channels"
+class MainActivity : FlutterActivity() {
+    companion object {
+        private const val CHANNEL = "lib.finpay.sdk/channels"
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        GeneratedPluginRegister.registerGeneratedPlugins(FlutterEngine(this@MainActivity))
-        flutterEngine?.dartExecutor?.let {
-            MethodChannel(it, CHANNEL).setMethodCallHandler { call, result ->
-                openApplication()
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+        super.configureFlutterEngine(flutterEngine)
+        GeneratedPluginRegistrant.registerWith(flutterEngine)
+        MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger, CHANNEL
+        ).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "openNativeApp" -> {
+                    openApplication()
+                }
+                "getBalance" -> {
+                    getUserBalance(onResult = { result.success(it) })
+                }
             }
             MethodChannel(it, CHANNEL).setMethodCallHandler { call, result ->
                 openQris()
@@ -40,7 +48,7 @@ class MainActivity: FlutterActivity() {
         FinpaySDKUI.telkomUIBuilder(java.util.UUID.randomUUID().toString(), this@MainActivity, credential())
     }
 
-    private fun openopenQrisWallet() {
+    private fun openQrisWallet() {
         FinpaySDKUI.walletUIBuilder("apptest", this@MainActivity, credential())
     }
 
@@ -57,16 +65,15 @@ class MainActivity: FlutterActivity() {
     private fun getUserBalance(
         onResult: (String) -> Unit
     ) {
-        FinpaySDK.getUserBallance(
-            java.util.UUID.randomUUID().toString(), //random string
+        FinpaySDK.getUserBallance(java.util.UUID.randomUUID().toString(), //random string
             this, {
-                onResult(it.amount!!)
-            },{
-                onResult("0")
+                onResult.invoke(it.amount!!)
+            }, {
+                onResult.invoke("0")
             })
     }
 
-    fun credential(): Credential {
+    private fun credential(): Credential {
         val cd = Credential()
         cd.setUsername("MT77764DKM83N")
         cd.setPassword("YJV3AM0y")
