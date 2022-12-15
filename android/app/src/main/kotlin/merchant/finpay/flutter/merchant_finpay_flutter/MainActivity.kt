@@ -26,12 +26,12 @@ class MainActivity : FlutterActivity() {
                 "getBalance" -> {
                     getUserBalance(onResult = { result.success(it) })
                 }
-            }
-            MethodChannel(it, CHANNEL).setMethodCallHandler { call, result ->
-                openQris()
-            }
-            MethodChannel(it, CHANNEL).setMethodCallHandler { call, result ->
-                openTelkom()
+                "openQris" -> {
+                    openQris()
+                }
+                "openTelkom" -> {
+                    openTelkom()
+                }
             }
         }
     }
@@ -48,7 +48,7 @@ class MainActivity : FlutterActivity() {
         FinpaySDKUI.telkomUIBuilder(java.util.UUID.randomUUID().toString(), this@MainActivity, credential())
     }
 
-    private fun openQrisWallet() {
+    private fun openWallet() {
         FinpaySDKUI.walletUIBuilder("apptest", this@MainActivity, credential())
     }
 

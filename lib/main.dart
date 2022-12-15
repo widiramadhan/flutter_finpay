@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:merchant_finpay_flutter/config.dart';
 
 void main() {
@@ -31,6 +32,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  String txtBalance = "";
 
   void _incrementCounter() {
     // setState(() {
@@ -129,31 +131,30 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text(txtBalance),
             ),
             SizedBox(height: 20,),
-            _roundedWidget(
-                text: "Logout",
-                backgroundColor: Color(0xFF333333),
-                textColor: Color(0xFFFFFFFF),
-                iconColor: Color(0xFFFFFFFF),
-                onTap: () async {
-                  await _logout();
-                }
-            ),
-            SizedBox(height: 20,),
-            _roundedWidget(
-                text: "Open",
-              backgroundColor: Color(0xFF333333),
-              textColor: Color(0xFFFFFFFF),
-              iconColor: Color(0xFFFFFFFF),
-              onTap: () async {
-                  await _openApplication();
-              }
-            )
+            // _roundedWidget(
+            //     text: "Logout",
+            //     backgroundColor: Color(0xFF333333),
+            //     textColor: Color(0xFFFFFFFF),
+            //     iconColor: Color(0xFFFFFFFF),
+            //     onTap: () async {
+            //       await _logout();
+            //     }
+            // ),
+            // SizedBox(height: 20,),
+            // _roundedWidget(
+            //     text: "Open",
+            //   backgroundColor: Color(0xFF333333),
+            //   textColor: Color(0xFFFFFFFF),
+            //   iconColor: Color(0xFFFFFFFF),
+            //   onTap: () async {
+            //       await _openApplication();
+            //   }
+            // )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async{
-          print("test");
           await _openTelkom();
         },
         tooltip: 'Increment',
